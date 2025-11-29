@@ -48,11 +48,11 @@ const experiences: Experience[] = [
     date: "Summer 2023",
     type: "internship",
     icon: "🧰",
-    image: "/assets/projects/clubs/.jpeg"
+    image: "/assets/projects/clubs/helix.jpeg"
   },
   {
     id: 3,
-    title: "Italy Study Abroad",
+    title: "Italy Immersion",
     subtitle: "UNLV Honors College",
     description:
       "Studied innovation, cities, and engineering history in Italy through immersive coursework and site visits.",
@@ -296,7 +296,7 @@ export default function ExperienceSection() {
     <section className="highlights-section" id="experience">
       <div className="highlights-container">
         <div className="highlights-header">
-          <h2 className="highlights-title">Professional Highlights</h2>
+          <h2 className="highlights-title">Featured Highlights</h2>
           <p className="highlights-subtitle">
             A curated reel of projects, awards, performances, and leadership roles.
           </p>

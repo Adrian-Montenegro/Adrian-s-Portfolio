@@ -38,7 +38,7 @@ const ResearchSection: React.FC = () => {
     },
     {
       id: 2,
-      title: "LCA Study",
+      title: "Life Cycle Assessment Study",
       category: "Environmental",
       description:
         "Dining vs delivery life-cycle emissions analysis.",
@@ -58,7 +58,7 @@ const ResearchSection: React.FC = () => {
     },
     {
       id: 3,
-      title: "Campus Security",
+      title: "Lethal Learning",
       category: "Systems Engineering",
       description:
         "Infrastructure impact on learning and student safety.",
@@ -78,7 +78,7 @@ const ResearchSection: React.FC = () => {
     },
     {
       id: 4,
-      title: "EWB Peru",
+      title: "Engineers Without Borders Peru",
       category: "Humanitarian",
       description:
         "Coastal community housing & cost-optimized design.",

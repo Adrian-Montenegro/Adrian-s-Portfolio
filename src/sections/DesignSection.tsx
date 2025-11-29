@@ -58,7 +58,7 @@ const projects: Project[] = [
     ],
     images: [
       '/assets/projects/design/sound-design/outofdark.jpeg',
-      '/assets/projects/design/sound-design/miriam.jpg',
+      '/assets/projects/design/sound-design/miriam.png',
       '/assets/projects/design/sound-design/clockfx.png',
       '/assets/projects/design/sound-design/credit.png',
       '/assets/projects/design/sound-design/soundfx.png',
@@ -82,7 +82,12 @@ const projects: Project[] = [
       'Excel-driven data backbone',
     ],
     images: [
-      '/assets/projects/fieldflow/FF_dashboard.png',
+      '/assets/projects/fieldflow/main.png',
+       '/assets/projects/fieldflow/FF_dashboard.png',
+      '/assets/projects/fieldflow/fieldflow_tasks.png',
+      '/assets/projects/fieldflow/export.png',
+      '/assets/projects/fieldflow/logsettings.png',
+      '/assets/projects/fieldflow/idea.jpeg',
     ],
   },
   {
