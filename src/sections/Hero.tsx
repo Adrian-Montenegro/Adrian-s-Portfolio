@@ -9,11 +9,11 @@ interface HeroProps {
 }
 
 const SLIDES = [
-  "/assets/dashboard/dash1.jpeg",
-  "/assets/dashboard/dash2.jpeg",
-  "/assets/dashboard/dash3.jpeg",
-  "/assets/dashboard/dash4.jpeg",
-  "/assets/dashboard/dash5.jpeg",
+  "/assets/dashboard/dash1.webp",
+  "/assets/dashboard/dash2.webp",
+  "/assets/dashboard/dash3.webp",
+  "/assets/dashboard/dash4.webp",
+  "/assets/dashboard/dash5.webp",
 ];
 
 const navItems = [
@@ -41,16 +41,21 @@ export default function Hero({
 }: HeroProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [previousSlide, setPreviousSlide] = useState(0);
   const [infoOpen, setInfoOpen] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
-  // Background slideshow
+  // Background slideshow – only keep previous + current in DOM
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+      setCurrentSlide((prev) => {
+        const next = (prev + 1) % SLIDES.length;
+        setPreviousSlide(prev);
+        return next;
+      });
     }, 8000); // 8 seconds per slide
 
     return () => clearInterval(interval);
@@ -70,17 +75,22 @@ export default function Hero({
     <section className="hero-section hero-section--slideshow">
       {/* Background slideshow */}
       <div className="hero-slides">
-        {SLIDES.map((src, index) => (
-          <div
-            key={src}
-            className={
-              index === currentSlide
-                ? "hero-slide hero-slide--active"
-                : "hero-slide"
-            }
-            style={{ backgroundImage: `url(${src})` }}
-          />
-        ))}
+        {[previousSlide, currentSlide].map((index, layer) => {
+          const src = SLIDES[index];
+          const isActive = index === currentSlide;
+
+          return (
+            <div
+              key={`${src}-${layer}`}
+              className={
+                isActive
+                  ? "hero-slide hero-slide--active"
+                  : "hero-slide hero-slide--inactive"
+              }
+              style={{ backgroundImage: `url(${src})` }}
+            />
+          );
+        })}
       </div>
 
       {/* Dark overlay */}

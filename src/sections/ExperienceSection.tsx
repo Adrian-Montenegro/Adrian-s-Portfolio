@@ -32,7 +32,7 @@ const experiences: Experience[] = [
     date: "2023–Present",
     type: "leadership",
     icon: "👥",
-    image: "/assets/academic/ESA/esa.png"
+    image: "/assets/academic/ESA/esa.png",
   },
   {
     id: 2,
@@ -48,7 +48,7 @@ const experiences: Experience[] = [
     date: "Summer 2023",
     type: "internship",
     icon: "🧰",
-    image: "/assets/projects/clubs/helix.jpeg"
+    image: "/assets/projects/clubs/helix.jpeg",
   },
   {
     id: 3,
@@ -64,7 +64,7 @@ const experiences: Experience[] = [
     date: "2023",
     type: "explore",
     icon: "🌍",
-    image: "/assets/projects/clubs/italian.jpeg"
+    image: "/assets/projects/clubs/italian.jpeg",
   },
   {
     id: 4,
@@ -80,7 +80,7 @@ const experiences: Experience[] = [
     date: "2024–2025",
     type: "academic",
     icon: "🏗️",
-    image: "/assets/projects/clubs/seniordesign.jpeg"
+    image: "/assets/projects/clubs/seniordesign.jpeg",
   },
   {
     id: 5,
@@ -96,7 +96,7 @@ const experiences: Experience[] = [
     date: "2024",
     type: "event",
     icon: "🏈",
-    image: "/assets/projects/clubs/superbowl.jpeg"
+    image: "/assets/projects/clubs/superbowl.jpeg",
   },
   {
     id: 6,
@@ -112,7 +112,7 @@ const experiences: Experience[] = [
     date: "2022, 2023",
     type: "academic",
     icon: "🏅",
-    image: "/assets/projects/clubs/honors.jpeg"
+    image: "/assets/projects/clubs/honors.jpeg",
   },
   {
     id: 7,
@@ -128,7 +128,7 @@ const experiences: Experience[] = [
     date: "2022",
     type: "academic",
     icon: "🎓",
-    image: "/assets/projects/clubs/outstanding.JPG"
+    image: "/assets/projects/clubs/outstanding.JPG",
   },
   {
     id: 8,
@@ -144,7 +144,7 @@ const experiences: Experience[] = [
     date: "2022",
     type: "research",
     icon: "📢",
-    image: "/assets/projects/clubs/lethal.jpeg"
+    image: "/assets/projects/clubs/lethal.jpeg",
   },
   {
     id: 9,
@@ -160,7 +160,7 @@ const experiences: Experience[] = [
     date: "2019",
     type: "competition",
     icon: "💻",
-    image: "/assets/projects/clubs/gencyber.jpeg"
+    image: "/assets/projects/clubs/gencyber.jpeg",
   },
   {
     id: 10,
@@ -176,7 +176,7 @@ const experiences: Experience[] = [
     date: "2024–Present",
     type: "club",
     icon: "🏙️",
-    image: "/assets/projects/clubs/APWA.JPG"
+    image: "/assets/projects/clubs/APWA.JPG",
   },
   {
     id: 11,
@@ -192,8 +192,8 @@ const experiences: Experience[] = [
     date: "2024",
     type: "competition",
     icon: "🚧",
-    image: "/assets/projects/clubs/agc.JPG"
-  }
+    image: "/assets/projects/clubs/agc.JPG",
+  },
 ];
 
 const loopingExperiences = [...experiences, ...experiences];
@@ -212,7 +212,7 @@ export default function ExperienceSection() {
   const maxSpeed = 260;
   const deadZone = 0.12;
 
-  // scrolling animation
+  // continuous scrolling animation
   useEffect(() => {
     const animate = (time: number) => {
       if (!trackRef.current) {
@@ -288,7 +288,7 @@ export default function ExperienceSection() {
   const handleScrollDown = () => {
     window.scrollBy({
       top: window.innerHeight,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   };
 
@@ -437,8 +437,6 @@ export default function ExperienceSection() {
               </div>
 
               <h3 className="card-title">{selected.title}</h3>
-
-              {/* subtitle removed in modal to keep it compact */}
 
               <p className="card-description">
                 {selected.expandedDescription ?? selected.description}

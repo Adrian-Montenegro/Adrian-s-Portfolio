@@ -70,9 +70,9 @@ const ResearchSection: React.FC = () => {
       status: "Published",
       images: [
         "/assets/projects/research/lethallearning/lethallearning.jpeg",
-        "/assets/projects/research/lethallearning/lethallearning.jpeg",
-        "/assets/projects/research/lethallearning/lethallearning.jpeg",
-        "/assets/projects/research/lethallearning/lethallearning.jpeg",
+        "/assets/projects/research/lethallearning/schoolposter.jpeg",
+        "/assets/projects/research/lethallearning/layoutschool.jpeg",
+        "/assets/projects/research/lethallearning/newschool.jpeg",
       ],
       pdfUrl: "/assets/Lethal_Learning.pdf",
     },
