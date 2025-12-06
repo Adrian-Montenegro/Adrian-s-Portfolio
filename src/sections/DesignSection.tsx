@@ -1,3 +1,4 @@
+// src/sections/DesignSection.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import '../styles/DesignSection.css';
 
@@ -37,7 +38,6 @@ const projects: Project[] = [
       '/assets/projects/design/optomat/opto_mat_screenshot.png',
       '/assets/projects/design/optomat/optomat selection.png',
       '/assets/projects/design/optomat/sustainability scoring.png',
-
     ],
   },
   {
@@ -83,7 +83,7 @@ const projects: Project[] = [
     ],
     images: [
       '/assets/projects/fieldflow/main.png',
-       '/assets/projects/fieldflow/FF_dashboard.png',
+      '/assets/projects/fieldflow/FF_dashboard.png',
       '/assets/projects/fieldflow/fieldflow_tasks.png',
       '/assets/projects/fieldflow/export.png',
       '/assets/projects/fieldflow/logsettings.png',
@@ -180,8 +180,25 @@ const DesignSection: React.FC = () => {
           <h2 className="section-title design-title">Engineering Projects</h2>
         </div>
 
+        {/* MOBILE TABS (visible only under 768px via CSS) */}
+        <div className="design-mobile-tabs" aria-label="Select design project">
+          {projects.map((project, index) => (
+            <button
+              key={project.title}
+              type="button"
+              className={
+                'design-mobile-tab' +
+                (index === activeTab ? ' design-mobile-tab--active' : '')
+              }
+              onClick={() => setActiveTab(index)}
+            >
+              {project.title}
+            </button>
+          ))}
+        </div>
+
         <div className="design-layout">
-          {/* Sidebar tabs */}
+          {/* Sidebar tabs – shown on desktop / tablet */}
           <aside className="design-sidebar">
             {projects.map((project, index) => (
               <button
@@ -205,10 +222,10 @@ const DesignSection: React.FC = () => {
 
           {/* Main content */}
           <main className="design-main">
-            {/* Visual panel - Now the main focus */}
+            {/* Visual panel */}
             <div className="design-main__visual">
               {activeImages.length > 0 ? (
-                <div 
+                <div
                   className="design-main__image-wrapper"
                   onTouchStart={handleTouchStart}
                   onTouchMove={handleTouchMove}
@@ -224,14 +241,14 @@ const DesignSection: React.FC = () => {
                   {activeImages.length > 1 && (
                     <>
                       <div className="design-image-nav">
-                        <button 
+                        <button
                           className="design-image-nav__btn design-image-nav__btn--prev"
                           onClick={handlePrevImage}
                           aria-label="Previous image"
                         >
                           ←
                         </button>
-                        
+
                         <div className="design-image-indicator">
                           <span className="design-image-indicator__current">
                             {activeImageIndex + 1}
@@ -242,7 +259,7 @@ const DesignSection: React.FC = () => {
                           </span>
                         </div>
 
-                        <button 
+                        <button
                           className="design-image-nav__btn design-image-nav__btn--next"
                           onClick={handleNextImage}
                           aria-label="Next image"
@@ -257,7 +274,9 @@ const DesignSection: React.FC = () => {
                           <button
                             key={index}
                             className={`design-image-dot ${
-                              index === activeImageIndex ? 'design-image-dot--active' : ''
+                              index === activeImageIndex
+                                ? 'design-image-dot--active'
+                                : ''
                             }`}
                             onClick={() => setActiveImageIndex(index)}
                             aria-label={`Go to image ${index + 1}`}
@@ -271,7 +290,7 @@ const DesignSection: React.FC = () => {
                 <div className="design-main__gradient" />
               )}
 
-              {/* Compact chips */}
+              {/* Chips */}
               <div className="design-main__chips">
                 <span className="design-chip">{activeProject.category}</span>
                 <span className="design-chip">{activeProject.status}</span>
@@ -279,7 +298,7 @@ const DesignSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Compact info panel */}
+            {/* Info panel */}
             <div className="design-main__info">
               <div className="design-main__text">
                 <h3 className="design-main__title">{activeProject.title}</h3>
