@@ -515,3 +515,28 @@
     opacity: 1;
   }
 }
+/* Mobile: add subtle arrow on highlight cards (like Research) */
+@media (max-width: 768px) {
+  .mobile-carousel-card {
+    position: relative;
+  }
+
+  .mobile-carousel-card::after {
+    content: "→";
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    font-size: 1.1rem;
+    color: #ef4444;
+    opacity: 0.9;
+    text-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    z-index: 2;
+  }
+
+  .mobile-carousel-card:active::after {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+}
