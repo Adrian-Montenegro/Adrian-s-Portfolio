@@ -525,3 +525,26 @@
     font-size: 1.7rem;  /* matches name */
   }
 }
+/* --- EXTRA-tight NAME fit for mobile LANDSCAPE --- */
+@media (max-width: 900px) and (max-height: 500px) {
+  .hero-title {
+    font-size: 1.45rem;   /* tighter than before */
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .hero-title-accent {
+    font-size: 1.45rem;
+  }
+
+  /* Slightly tighten tagline pill */
+  .hero-tagline {
+    padding: 0.35rem 0.9rem;
+    font-size: 0.72rem;
+  }
+
+  /* Slightly tighten description spacing */
+  .hero-description {
+    margin-bottom: 0.9rem;
+  }
+}
