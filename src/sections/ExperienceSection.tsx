@@ -262,7 +262,7 @@ export default function ExperienceSection() {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
     const rect = container.getBoundingClientRect();
-    const x = e.clientX - rect.left;
+    the const x = e.clientX - rect.left;
     const center = rect.width / 2;
 
     const normalized = (x - center) / center;
@@ -403,17 +403,17 @@ export default function ExperienceSection() {
           </div>
         </div>
 
-        {/* BOTTOM red arrow – matches Research section vibe */}
+        {/* BOTTOM SCROLL ARROW – matches Research section styling */}
         <div
-          className="section-end-indicator"
+          className="research-scroll"
           onClick={handleScrollToNext}
           aria-label="Scroll to next section"
         >
-          <FiChevronDown className="section-end-icon" />
+          <FiChevronDown className="research-scroll-icon" />
         </div>
       </div>
 
-      {/* CENTERED FOCAL CARD OVERLAY */}
+      {/* CENTERED FOCAL CARD OVERLAY (desktop + mobile) */}
       {selected && (
         <div
           className="experience-modal-backdrop"
@@ -423,9 +423,11 @@ export default function ExperienceSection() {
             className="experience-modal-card"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* red X visible on all viewports, including mobile */}
             <button
               className="experience-modal-close"
               onClick={() => setSelected(null)}
+              aria-label="Close highlight details"
             >
               ×
             </button>

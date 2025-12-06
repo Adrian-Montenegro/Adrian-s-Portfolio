@@ -175,7 +175,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* type fallbacks if image fails */
+/* type fallbacks */
 .card-header.competition {
   background: #1a1a1a;
 }
@@ -213,25 +213,35 @@
 
 .scroll-down-icon {
   font-size: 2rem;
-  color: var(--color-red);
+  color: #ef4444;
+  opacity: 0.8;
   animation: bounceDown 2s infinite;
 }
 
-/* ===== BOTTOM SECTION ARROW (ALL VIEWPORTS) ===== */
-.section-end-indicator {
-  margin-top: var(--space-xl);
+/* ===== BOTTOM SCROLL ARROW (MATCH RESEARCH SECTION) ===== */
+.research-scroll {
+  margin-top: 3rem;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
+  color: #ef4444;
 }
 
-.section-end-icon {
-  font-size: 2.4rem;
-  color: var(--color-red);
-  animation: bounceDown 2.2s infinite;
+.research-scroll-icon {
+  font-size: 2.2rem;
+  color: #ef4444;
+  opacity: 0.75;
+  animation: bounceDown 2s infinite;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+.research-scroll:hover .research-scroll-icon {
+  opacity: 1;
+  transform: translateY(4px);
+}
+
+/* Shared bounce animation */
 @keyframes bounceDown {
   0%,
   100% {
@@ -281,7 +291,7 @@
   margin-bottom: var(--space-md);
 }
 
-/* ===== MODAL OVERLAY ===== */
+/* ===== MODAL OVERLAY (DESKTOP & MOBILE) ===== */
 .experience-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -332,6 +342,7 @@
   opacity: 0.85;
 }
 
+/* red X – visible on desktop + mobile */
 .experience-modal-close {
   position: absolute;
   top: 1.1rem;
@@ -479,8 +490,8 @@
   }
 
   .experience-modal-close {
-    top: 0.75rem;
-    right: 0.75rem;
+    top: 0.9rem;   /* keep clear of notch */
+    right: 0.9rem;
     width: 30px;
     height: 30px;
     font-size: 1.1rem;
