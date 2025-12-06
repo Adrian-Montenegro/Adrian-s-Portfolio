@@ -125,6 +125,7 @@ const DesignSection: React.FC = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const activeProject = projects[activeTab];
   const activeImages = activeProject.images ?? [];
@@ -132,6 +133,7 @@ const DesignSection: React.FC = () => {
   // Reset image index when switching projects
   useEffect(() => {
     setActiveImageIndex(0);
+    setIsFullscreen(false);
   }, [activeTab]);
 
   const handleNextImage = () => {
@@ -170,6 +172,17 @@ const DesignSection: React.FC = () => {
   useEffect(() => {
     handleTouchEnd();
   }, [handleTouchEnd]);
+
+  // Close fullscreen on ESC
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
   return (
     <section id="design" className="design-section">
@@ -235,6 +248,7 @@ const DesignSection: React.FC = () => {
                     src={activeImages[activeImageIndex]}
                     alt={activeProject.title}
                     className="design-main__image"
+                    onClick={() => setIsFullscreen(true)}
                   />
 
                   {/* Image Navigation */}
@@ -248,16 +262,6 @@ const DesignSection: React.FC = () => {
                         >
                           ←
                         </button>
-
-                        <div className="design-image-indicator">
-                          <span className="design-image-indicator__current">
-                            {activeImageIndex + 1}
-                          </span>
-                          <span className="design-image-indicator__separator">/</span>
-                          <span className="design-image-indicator__total">
-                            {activeImages.length}
-                          </span>
-                        </div>
 
                         <button
                           className="design-image-nav__btn design-image-nav__btn--next"
@@ -282,6 +286,17 @@ const DesignSection: React.FC = () => {
                             aria-label={`Go to image ${index + 1}`}
                           />
                         ))}
+                      </div>
+
+                      {/* Subtle bottom-right page indicator */}
+                      <div className="design-image-indicator">
+                        <span className="design-image-indicator__current">
+                          {activeImageIndex + 1}
+                        </span>
+                        <span className="design-image-indicator__separator">/</span>
+                        <span className="design-image-indicator__total">
+                          {activeImages.length}
+                        </span>
                       </div>
                     </>
                   )}
@@ -332,6 +347,33 @@ const DesignSection: React.FC = () => {
           </main>
         </div>
       </div>
+
+      {/* FULLSCREEN IMAGE MODAL */}
+      {isFullscreen && activeImages.length > 0 && (
+        <div
+          className="design-fullscreen-backdrop"
+          onClick={() => setIsFullscreen(false)}
+        >
+          <div
+            className="design-fullscreen-card"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="design-fullscreen-close"
+              onClick={() => setIsFullscreen(false)}
+              aria-label="Close fullscreen image"
+            >
+              ×
+            </button>
+
+            <img
+              src={activeImages[activeImageIndex]}
+              alt={activeProject.title}
+              className="design-fullscreen-image"
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 };
