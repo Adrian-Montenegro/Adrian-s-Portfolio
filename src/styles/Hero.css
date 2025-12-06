@@ -18,36 +18,37 @@
   height: 100%;
 }
 
+/* Base slide: start slightly zoomed in & invisible */
 .hero-slide {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
   opacity: 0;
-  transform: scale(1.08);
+  transform: scale(1.04);
   transition:
-    opacity 1.8s ease-in-out,
-    transform 18s ease-out;
+    opacity 1.6s ease-in-out,
+    transform 11s ease-out;
 }
 
+/* Active slide: fade in and very gently zoom out */
 .hero-slide--active {
   opacity: 1;
   transform: scale(1);
-  z-index: 2;
 }
 
+/* Inactive slide: stay slightly zoomed but hidden */
 .hero-slide--inactive {
   opacity: 0;
-  transform: scale(1.04);
-  z-index: 1;
+  transform: scale(1.02);
 }
 
-/* Dark overlay */
+/* Dark overlay for readability (desktop / default) */
 .hero-overlay {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 15% 20%, rgba(0, 0, 0, 0.3), transparent 55%),
+    radial-gradient(circle at 15% 20%, rgba(0, 0, 0, 0.35), transparent 55%),
     linear-gradient(120deg, rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.55));
   z-index: 1;
 }
@@ -107,7 +108,7 @@
   text-transform: uppercase;
   font-weight: var(--font-weight-semibold);
   background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(239, 68, 68, 0.45);
+  border: 1px solid rgba(239, 68, 68, 0.75);
   margin-bottom: 1.5rem;
 }
 
@@ -121,7 +122,7 @@
   margin-bottom: 2.2rem;
 }
 
-/* Actions */
+/* --- Primary CTA button (View CV) --- */
 
 .hero-actions {
   display: flex;
@@ -129,12 +130,12 @@
   gap: 1rem;
 }
 
-/* Primary CV button */
+/* Black pill with red border, matching the big tagline style */
 .hero-btn-primary {
-  padding: 0.8rem 2.2rem;
+  padding: 0.65rem 1.7rem;
   border-radius: 999px;
-  border: 1px solid rgba(239, 68, 68, 0.85);
-  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(239, 68, 68, 0.9);
+  background: rgba(0, 0, 0, 0.92);
   color: #f9fafb;
   font-size: 0.95rem;
   font-weight: var(--font-weight-medium);
@@ -143,9 +144,6 @@
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8);
   transition:
     background 0.25s ease,
     border-color 0.25s ease,
@@ -154,97 +152,10 @@
 }
 
 .hero-btn-primary:hover {
-  background: rgba(15, 15, 15, 0.98);
-  border-color: rgba(248, 113, 113, 1);
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 1);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.75);
   transform: translateY(-1px);
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(0, 0, 0, 0.9);
-}
-
-/* (Old info button styles kept in case you reuse later) */
-
-.hero-actions {
-  position: relative;
-}
-
-.hero-btn-info {
-  padding: 0.65rem 1.6rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(10, 10, 10, 0.75);
-  color: var(--color-white);
-  font-size: 0.9rem;
-  font-weight: var(--font-weight-medium);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
-}
-
-.hero-btn-info:hover {
-  background: rgba(15, 15, 15, 0.9);
-  border-color: var(--color-red-light);
-  transform: translateY(-1px);
-}
-
-.hero-info-box {
-  position: absolute;
-  top: 115%;
-  left: 0;
-  padding: 0.9rem 1rem;
-  min-width: 260px;
-  border-radius: 14px;
-  background: radial-gradient(circle at 0 0, rgba(239, 68, 68, 0.18), transparent 55%),
-              rgba(8, 8, 8, 0.96);
-  border: 1px solid rgba(239, 68, 68, 0.6);
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(18px);
-  color: #e5e5e5;
-  font-size: 0.88rem;
-  line-height: 1.6;
-  animation: infoFade 0.25s ease-out forwards;
-  z-index: 5;
-}
-
-.hero-info-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 0.6rem;
-  row-gap: 0.15rem;
-  align-items: baseline;
-}
-
-.hero-info-item + .hero-info-item {
-  margin-top: 0.45rem;
-  padding-top: 0.45rem;
-  border-top: 1px solid rgba(239, 68, 68, 0.35);
-}
-
-.hero-info-label {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--color-red-light);
-}
-
-.hero-info-value {
-  font-weight: var(--font-weight-medium);
-  color: #f5f5f5;
-}
-
-@keyframes infoFade {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* --- Right column: nav cards --- */
@@ -255,8 +166,9 @@
   width: 360px;
   border-radius: 24px;
   padding: 0.4rem;
-  background: radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.02), transparent 55%),
-              rgba(0, 0, 0, 0.78);
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.02), transparent 55%),
+    rgba(0, 0, 0, 0.78);
   backdrop-filter: blur(26px);
   box-shadow:
     0 22px 70px rgba(0, 0, 0, 0.9),
@@ -264,7 +176,6 @@
   gap: 0.35rem;
 }
 
-/* Base nav card */
 .hero-nav-card {
   display: flex;
   align-items: center;
@@ -272,8 +183,9 @@
   padding: 1.4rem 1.7rem;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 18px;
-  background: radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.02), transparent 65%),
-              rgba(10, 10, 10, 0.95);
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.02), transparent 65%),
+    rgba(10, 10, 10, 0.95);
   text-align: left;
   cursor: pointer;
   color: #f9fafb;
@@ -284,7 +196,7 @@
     background 0.22s ease;
 }
 
-/* Variants */
+/* Red / white / black tint variants */
 .hero-nav-card--experience {
   background:
     radial-gradient(circle at 0 0, rgba(239, 68, 68, 0.28), transparent 62%),
@@ -306,6 +218,7 @@
   border-color: rgba(15, 15, 15, 1);
 }
 
+/* Content inside cards */
 .hero-nav-main {
   display: flex;
   flex-direction: column;
@@ -324,6 +237,7 @@
   font-weight: var(--font-weight-semibold);
 }
 
+/* Red arrow */
 .hero-nav-arrow {
   font-size: 1.15rem;
   opacity: 0.8;
@@ -332,15 +246,15 @@
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-.hero-nav-card:hover .hero-nav-arrow {
-  transform: translateX(4px);
-  opacity: 1;
-}
-
-/* Hover motion */
+/* Hover states */
 .hero-nav-card:hover {
   transform: translateX(6px);
   box-shadow: 0 14px 38px rgba(0, 0, 0, 0.6);
+}
+
+.hero-nav-card:hover .hero-nav-arrow {
+  transform: translateX(4px);
+  opacity: 1;
 }
 
 .hero-nav-card--experience:hover {
@@ -432,29 +346,74 @@
   }
 }
 
+/* --- Mobile layout (phones) --- */
 @media (max-width: 640px) {
+  /* Stronger shading on the background for readability */
+  .hero-overlay {
+    background:
+      linear-gradient(
+        160deg,
+        rgba(0, 0, 0, 0.96),
+        rgba(0, 0, 0, 0.88)
+      );
+  }
+
   .hero-shell {
-    padding: 0 1.5rem;
+    padding: 0 1.25rem 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1.4rem; /* tighter so cards come up higher */
+  }
+
+  .hero-left {
+    max-width: 100%;
   }
 
   .hero-title {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
+    line-height: 1.05;
   }
 
   .hero-tagline {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     letter-spacing: 0.16em;
+    padding: 0.45rem 1.05rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .hero-description {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 1.3rem; /* less space above the cards */
+  }
+
+  /* CV button – smaller and tighter */
+  .hero-actions {
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-btn-primary {
+    padding: 0.55rem 1.4rem;
+    font-size: 0.9rem;
+    border-radius: 999px;
+  }
+
+  /* Nav cards more compact so all 3 fit above the fold */
+  .hero-nav {
+    width: 100%;
+    max-width: 420px;
   }
 
   .hero-nav-card {
-    padding: 1.3rem 1.4rem;
+    padding: 1.05rem 1.3rem;
   }
 
-  .hero-info-box {
-    min-width: 230px;
+  .hero-nav-label {
+    font-size: 1.15rem;
   }
 
-  /* 🔥 Mobile: hide scroll indicator completely */
+  /* Hide scroll indicator completely on mobile */
   .scroll-indicator {
     display: none;
   }
