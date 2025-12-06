@@ -97,14 +97,13 @@ export default function Hero({
           </h1>
 
           <div className="hero-tagline">
-            SUSTAINABILITY • DESIGN • WATER SYSTEMS
+            SOFTWARE • DESIGN • SYSTEMS
           </div>
 
           <p className="hero-description">
             UNLV Honors College Civil &amp; Environmental Engineering student
             with a passion for designing across disciplines—software,
-            infrastructure, and physical systems. I enjoy blending creative flair
-            with a structured, systems-based approach to problem solving.
+            infrastructure, and physical systems.
           </p>
 
           <div className="hero-actions">
