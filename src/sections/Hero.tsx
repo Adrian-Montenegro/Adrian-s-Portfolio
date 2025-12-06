@@ -1,4 +1,3 @@
-// src/sections/Hero.tsx
 import { useState, useEffect } from "react";
 import "../styles/Hero.css";
 
@@ -42,7 +41,6 @@ export default function Hero({
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [previousSlide, setPreviousSlide] = useState(0);
-  const [infoOpen, setInfoOpen] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -115,42 +113,50 @@ export default function Hero({
           </div>
 
           <p className="hero-description">
-            UNLV Honors College graduate specializing in water systems,
-            sustainable design, and environmental engineering. Bridging
-            technical excellence with environmental stewardship.
+            UNLV Honors College civil &amp; environmental engineering student
+            specializing in water systems, sustainable design, and
+            environmental engineering. Currently completing a B.S. in Civil
+            &amp; Environmental Engineering (graduating Fall 2025) and
+            focused on bridging technical excellence with environmental
+            stewardship.
           </p>
 
-          <div className="hero-actions">
-            <button
-              type="button"
-              className="hero-btn-info"
-              onClick={() => setInfoOpen((open) => !open)}
-            >
-              More info
-            </button>
-
-            {infoOpen && (
-              <div className="hero-info-box">
-                <div className="hero-info-item">
-                  <span className="hero-info-label">Degree</span>
-                  <span className="hero-info-value">
-                    B.S. Civil &amp; Environmental Engineering
-                  </span>
-                </div>
-
-                <div className="hero-info-item">
-                  <span className="hero-info-label">Graduation</span>
-                  <span className="hero-info-value">Fall 2025</span>
-                </div>
-
-                <div className="hero-info-item">
-                  <span className="hero-info-label">Email</span>
-                  <span className="hero-info-value">
-                    montea12@unlv.nevada.edu
-                  </span>
-                </div>
+          {/* Inline “more info” details */}
+          <div className="hero-meta">
+            <div className="hero-meta-row">
+              <div className="hero-meta-item">
+                <span className="hero-meta-label">Degree</span>
+                <span className="hero-meta-value">
+                  B.S. Civil &amp; Environmental Engineering
+                </span>
               </div>
-            )}
+
+              <div className="hero-meta-item">
+                <span className="hero-meta-label">Graduation</span>
+                <span className="hero-meta-value">Fall 2025</span>
+              </div>
+            </div>
+
+            <div className="hero-meta-row">
+              <div className="hero-meta-item">
+                <span className="hero-meta-label">Email</span>
+                <span className="hero-meta-value">
+                  montea12@unlv.nevada.edu
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="hero-actions">
+            {/* TODO: update href to your actual CV route / file */}
+            <a
+              href="/Adrian-Montenegro-CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-btn-primary"
+            >
+              View CV
+            </a>
           </div>
         </div>
 

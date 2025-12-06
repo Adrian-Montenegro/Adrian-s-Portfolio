@@ -573,3 +573,30 @@
     font-size: 0.9rem;
   }
 }
+
+/* MOBILE 2×2 TAB GRID ------------------------------------ */
+@media (max-width: 768px) {
+  .design-mobile-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    overflow: visible;   /* turn off scrolling */
+    padding-bottom: 0;
+  }
+
+  .design-mobile-tab {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    border-radius: 16px;
+    white-space: normal;
+  }
+}
+.design-mobile-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
