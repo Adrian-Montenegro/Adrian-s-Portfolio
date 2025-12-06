@@ -202,7 +202,7 @@ export default function ExperienceSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<Experience | null>(null);
 
-  // movement state
+  // movement state (desktop auto-scroll)
   const offsetRef = useRef(0);
   const velocityRef = useRef(-70);
   const lastTimeRef = useRef<number | null>(null);
@@ -212,8 +212,7 @@ export default function ExperienceSection() {
   const maxSpeed = 260;
   const deadZone = 0.12;
 
-  // continuous scrolling animation (desktop only visually;
-  // element is hidden on mobile via CSS)
+  // continuous scrolling animation (desktop)
   useEffect(() => {
     const animate = (time: number) => {
       if (!trackRef.current) {
@@ -253,9 +252,7 @@ export default function ExperienceSection() {
   // close modal on Escape key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setSelected(null);
-      }
+      if (e.key === "Escape") setSelected(null);
     };
 
     window.addEventListener("keydown", handleEsc);
@@ -286,11 +283,22 @@ export default function ExperienceSection() {
     velocityRef.current = baseSpeed;
   };
 
+  // mid-section arrow (same behavior as before)
   const handleScrollDown = () => {
     window.scrollBy({
       top: window.innerHeight,
       behavior: "smooth",
     });
+  };
+
+  // bottom arrow – try to jump to #research, otherwise just scroll down
+  const handleScrollToNext = () => {
+    const next = document.getElementById("research");
+    if (next) {
+      next.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
+    }
   };
 
   return (
@@ -348,7 +356,7 @@ export default function ExperienceSection() {
           </div>
         </div>
 
-        {/* Red transition arrow (desktop only; hidden on mobile via CSS) */}
+        {/* Mid-section red transition arrow (desktop / tablet) */}
         <div className="gallery-scroll-indicator" onClick={handleScrollDown}>
           <FiChevronDown className="scroll-down-icon" />
         </div>
@@ -394,6 +402,15 @@ export default function ExperienceSection() {
             ))}
           </div>
         </div>
+
+        {/* BOTTOM red arrow – matches Research section vibe */}
+        <div
+          className="section-end-indicator"
+          onClick={handleScrollToNext}
+          aria-label="Scroll to next section"
+        >
+          <FiChevronDown className="section-end-icon" />
+        </div>
       </div>
 
       {/* CENTERED FOCAL CARD OVERLAY */}
@@ -407,10 +424,8 @@ export default function ExperienceSection() {
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              type="button"
               className="experience-modal-close"
               onClick={() => setSelected(null)}
-              aria-label="Close details"
             >
               ×
             </button>
