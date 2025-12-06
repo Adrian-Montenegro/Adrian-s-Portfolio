@@ -492,3 +492,26 @@
     padding: 1.25rem 1.25rem 1.5rem;
   }
 }
+/* === MOBILE ARROW (Match Research Styling) ===================== */
+@media (max-width: 768px) {
+  .feature-card {
+    position: relative;
+  }
+
+  .feature-card::after {
+    content: "→";
+    position: absolute;
+    right: 16px;
+    top: 18px;
+    font-size: 1.1rem;
+    color: #ef4444;
+    opacity: 0.9;
+    text-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .feature-card:active::after {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+}
