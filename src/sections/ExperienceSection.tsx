@@ -212,7 +212,8 @@ export default function ExperienceSection() {
   const maxSpeed = 260;
   const deadZone = 0.12;
 
-  // continuous scrolling animation (desktop)
+  // continuous scrolling animation (desktop only visually;
+  // element is hidden on mobile via CSS)
   useEffect(() => {
     const animate = (time: number) => {
       if (!trackRef.current) {
@@ -298,7 +299,8 @@ export default function ExperienceSection() {
         <div className="highlights-header">
           <h2 className="highlights-title">Featured Highlights</h2>
           <p className="highlights-subtitle">
-            A curated reel of projects, awards, performances, and leadership roles.
+            A curated reel of projects, awards, performances, and leadership
+            roles.
           </p>
         </div>
 
@@ -346,7 +348,7 @@ export default function ExperienceSection() {
           </div>
         </div>
 
-        {/* Red transition arrow */}
+        {/* Red transition arrow (desktop only; hidden on mobile via CSS) */}
         <div className="gallery-scroll-indicator" onClick={handleScrollDown}>
           <FiChevronDown className="scroll-down-icon" />
         </div>
@@ -405,8 +407,10 @@ export default function ExperienceSection() {
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              type="button"
               className="experience-modal-close"
               onClick={() => setSelected(null)}
+              aria-label="Close details"
             >
               ×
             </button>

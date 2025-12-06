@@ -129,6 +129,7 @@
   z-index: 3;
 }
 
+/* Card body */
 .card-content {
   padding: var(--space-lg);
   height: 300px;
@@ -230,7 +231,7 @@
 /* ===== MOBILE HORIZONTAL CAROUSEL ===== */
 
 .highlights-mobile-carousel {
-  display: none; /* hidden on desktop, enabled in mobile media query */
+  display: none; /* enabled in mobile media query */
 }
 
 .mobile-carousel-track {
@@ -248,7 +249,6 @@
   backdrop-filter: blur(10px);
 }
 
-/* reuse stack header for the image area */
 .stack-header {
   height: 130px;
   position: relative;
@@ -265,6 +265,13 @@
 
 .stack-content .card-description {
   margin-bottom: var(--space-md);
+}
+
+.card-date {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: 0.8rem;
+  color: var(--color-white-muted);
 }
 
 /* ===== MODAL OVERLAY ===== */
@@ -319,6 +326,7 @@
   opacity: 0.85;
 }
 
+/* RED X CLOSE BUTTON */
 .experience-modal-close {
   position: absolute;
   top: 1.1rem;
@@ -336,6 +344,22 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    background 0.15s ease, border-color 0.15s ease;
+}
+
+.experience-modal-close:hover {
+  transform: translateY(-1px) scale(1.03);
+  background: rgba(248, 113, 113, 1);
+  border-color: rgba(252, 165, 165, 1);
+  box-shadow:
+    0 0 0 1px rgba(239, 68, 68, 0.9),
+    0 10px 24px rgba(0, 0, 0, 0.7);
+}
+
+.experience-modal-close:active {
+  transform: scale(0.96);
 }
 
 /* highlight block inside modal */
@@ -394,7 +418,7 @@
 }
 
 @media (max-width: 768px) {
-  /* hide desktop track on small screens */
+  /* hide desktop track + arrow on small screens */
   .scrolling-gallery,
   .gallery-scroll-indicator {
     display: none;
