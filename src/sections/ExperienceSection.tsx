@@ -202,7 +202,7 @@ export default function ExperienceSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<Experience | null>(null);
 
-  // movement state (desktop auto-scroll)
+  // movement state
   const offsetRef = useRef(0);
   const velocityRef = useRef(-70);
   const lastTimeRef = useRef<number | null>(null);
@@ -252,7 +252,9 @@ export default function ExperienceSection() {
   // close modal on Escape key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelected(null);
+      if (e.key === "Escape") {
+        setSelected(null);
+      }
     };
 
     window.addEventListener("keydown", handleEsc);
@@ -262,7 +264,7 @@ export default function ExperienceSection() {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
     const rect = container.getBoundingClientRect();
-    the const x = e.clientX - rect.left;
+    const x = e.clientX - rect.left;
     const center = rect.width / 2;
 
     const normalized = (x - center) / center;
@@ -283,22 +285,11 @@ export default function ExperienceSection() {
     velocityRef.current = baseSpeed;
   };
 
-  // mid-section arrow (same behavior as before)
   const handleScrollDown = () => {
     window.scrollBy({
       top: window.innerHeight,
       behavior: "smooth",
     });
-  };
-
-  // bottom arrow – try to jump to #research, otherwise just scroll down
-  const handleScrollToNext = () => {
-    const next = document.getElementById("research");
-    if (next) {
-      next.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else {
-      window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
-    }
   };
 
   return (
@@ -307,8 +298,7 @@ export default function ExperienceSection() {
         <div className="highlights-header">
           <h2 className="highlights-title">Featured Highlights</h2>
           <p className="highlights-subtitle">
-            A curated reel of projects, awards, performances, and leadership
-            roles.
+            A curated reel of projects, awards, performances, and leadership roles.
           </p>
         </div>
 
@@ -356,7 +346,7 @@ export default function ExperienceSection() {
           </div>
         </div>
 
-        {/* Mid-section red transition arrow (desktop / tablet) */}
+        {/* Red transition arrow */}
         <div className="gallery-scroll-indicator" onClick={handleScrollDown}>
           <FiChevronDown className="scroll-down-icon" />
         </div>
@@ -402,18 +392,9 @@ export default function ExperienceSection() {
             ))}
           </div>
         </div>
-
-        {/* BOTTOM SCROLL ARROW – matches Research section styling */}
-        <div
-          className="research-scroll"
-          onClick={handleScrollToNext}
-          aria-label="Scroll to next section"
-        >
-          <FiChevronDown className="research-scroll-icon" />
-        </div>
       </div>
 
-      {/* CENTERED FOCAL CARD OVERLAY (desktop + mobile) */}
+      {/* CENTERED FOCAL CARD OVERLAY */}
       {selected && (
         <div
           className="experience-modal-backdrop"
@@ -423,11 +404,9 @@ export default function ExperienceSection() {
             className="experience-modal-card"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* red X visible on all viewports, including mobile */}
             <button
               className="experience-modal-close"
               onClick={() => setSelected(null)}
-              aria-label="Close highlight details"
             >
               ×
             </button>

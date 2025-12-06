@@ -6,13 +6,13 @@ type ResearchProject = {
   id: number;
   title: string;
   category: string;
-  description: string;          // short blurb (front card)
-  detailDescription: string;    // deeper description (inside modal)
-  insight: string;              // “what I focused on / learned”
+  description: string; // short blurb (front card)
+  detailDescription: string; // deeper description (inside modal)
+  insight: string; // “what I focused on / learned”
   outcome: string;
   status: string;
-  images: string[];             // 4 images for gallery
-  pdfUrl?: string;              // optional, if you want a PDF button
+  images: string[]; // 4 images for gallery
+  pdfUrl?: string; // optional, if you want a PDF button
 };
 
 const ResearchSection: React.FC = () => {
@@ -40,8 +40,7 @@ const ResearchSection: React.FC = () => {
       id: 2,
       title: "Life Cycle Assessment Study",
       category: "Environmental",
-      description:
-        "Dining vs delivery life-cycle emissions analysis.",
+      description: "Dining vs delivery life-cycle emissions analysis.",
       detailDescription:
         "Compared the cradle-to-grave emissions of dining in versus ordering delivery for a typical restaurant meal. Built a life-cycle inventory, modeled transportation and packaging impacts, and tested scenarios for behavior change.",
       insight:
@@ -80,8 +79,7 @@ const ResearchSection: React.FC = () => {
       id: 4,
       title: "Engineers Without Borders Peru",
       category: "Humanitarian",
-      description:
-        "Coastal community housing & cost-optimized design.",
+      description: "Coastal community housing & cost-optimized design.",
       detailDescription:
         "Collaborated on housing concepts for a coastal community in Peru, targeting durability, cost, and constructability with locally available materials and labor.",
       insight:
@@ -195,6 +193,7 @@ const ResearchSection: React.FC = () => {
             <button
               className="research-modal-close"
               onClick={() => setSelected(null)}
+              aria-label="Close research project details"
             >
               ×
             </button>
