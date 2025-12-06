@@ -389,3 +389,14 @@
     font-size: 0.85rem;
   }
 }
+/* ✅ MOBILE ONLY: Remove "CLICK TO EXPLORE" text */
+@media (max-width: 640px) {
+  .scroll-text {
+    display: none;
+  }
+
+  /* Optional: tighten spacing so the line isn't floating awkwardly */
+  .scroll-line {
+    height: 26px;
+  }
+}
