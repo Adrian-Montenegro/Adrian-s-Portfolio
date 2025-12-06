@@ -227,22 +227,19 @@
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  padding: 1.5rem;
+  padding: 2rem;
   backdrop-filter: blur(10px);
 }
 
-/* Card is capped in height so the X stays visible */
 .research-modal-card {
   position: relative;
   max-width: 1220px;
   width: 100%;
-  max-height: 92vh;
   background: #ffffff;
   border-radius: 22px;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;        /* ✅ allow internal scrolling */
+  max-height: 90vh;        /* ✅ keep it within the viewport */
 }
 
 /* red X close button */
@@ -263,6 +260,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+  z-index: 3;
 }
 
 /* Layout inside modal */
@@ -270,7 +268,6 @@
   display: grid;
   grid-template-columns: 1.7fr 1.1fr; /* more space for images */
   min-height: 400px;
-  max-height: calc(92vh - 3rem); /* leave room for close button padding */
 }
 
 /* LEFT: huge gallery */
@@ -328,7 +325,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-  overflow-y: auto; /* so text scrolls inside the card if needed */
 }
 
 .research-modal-meta {
@@ -389,36 +385,41 @@
   text-decoration: underline;
 }
 
-/* ====== RESPONSIVE MODAL (TABLET / MOBILE) ====== */
-
+/* Responsive modal */
 @media (max-width: 900px) {
   .research-modal-layout {
     grid-template-columns: 1fr;
-    max-height: calc(92vh - 3rem);
   }
 
   .research-modal-left {
-    padding: 1.25rem 1.25rem 1rem;
     border-bottom: 1px solid rgba(249, 250, 251, 0.06);
   }
 
   .research-modal-image {
     height: 260px;
   }
-
-  .research-modal-right {
-    padding: 1.5rem 1.6rem 1.8rem;
-  }
 }
 
 @media (max-width: 640px) {
+  .research-wrapper {
+    padding: 4rem 1.5rem 3.5rem;
+  }
+
+  .research-modal-backdrop {
+    padding: 1.25rem;
+  }
+
   .research-modal-card {
     max-width: 100%;
-    border-radius: 20px;
+    max-height: 90vh;      /* keep full-height behavior on tiny screens */
+  }
+
+  .research-modal-left {
+    padding: 1.25rem 1.25rem 1.4rem;
   }
 
   .research-modal-image {
-    height: 220px;
+    height: 230px;
   }
 
   .research-modal-thumbs {
@@ -430,6 +431,14 @@
   }
 
   .research-modal-right {
-    padding: 1.4rem 1.4rem 1.7rem;
+    padding: 1.5rem 1.5rem 1.7rem;
+  }
+
+  .research-modal-title {
+    font-size: 1.6rem;
+  }
+
+  .research-modal-desc {
+    font-size: 0.9rem;
   }
 }
