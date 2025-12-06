@@ -85,7 +85,6 @@
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   backdrop-filter: blur(10px);
   position: relative;
-  cursor: pointer;
 }
 
 .gallery-card:hover {
@@ -203,7 +202,7 @@
   background: #14213d;
 }
 
-/* ===== MID-SECTION RED ARROW (DESKTOP/TABLET) ===== */
+/* Mid-page red arrow (desktop/tablet) */
 .gallery-scroll-indicator {
   margin-top: var(--space-lg);
   display: flex;
@@ -218,9 +217,20 @@
   animation: bounceDown 2s infinite;
 }
 
+@keyframes bounceDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
 /* ===== MOBILE HORIZONTAL CAROUSEL ===== */
+
 .highlights-mobile-carousel {
-  display: none; /* enabled in mobile media query */
+  display: none; /* hidden on desktop, enabled in mobile media query */
 }
 
 .mobile-carousel-track {
@@ -236,7 +246,6 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
   backdrop-filter: blur(10px);
-  cursor: pointer;
 }
 
 /* reuse stack header for the image area */
@@ -258,14 +267,7 @@
   margin-bottom: var(--space-md);
 }
 
-.card-date {
-  display: block;
-  margin-top: var(--space-xs);
-  font-size: 0.85rem;
-  color: var(--color-white-muted);
-}
-
-/* ===== MODAL OVERLAY (DESKTOP + MOBILE) ===== */
+/* ===== MODAL OVERLAY ===== */
 
 .experience-modal-backdrop {
   position: fixed;
@@ -279,6 +281,7 @@
   backdrop-filter: blur(8px);
 }
 
+/* central card */
 .experience-modal-card {
   position: relative;
   background: rgba(15, 15, 15, 0.98);
@@ -286,13 +289,14 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   max-width: 880px;
   width: 100%;
-  max-height: min(90vh, 720px);
+  max-height: 90vh;
   overflow: hidden;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
 }
 
+/* HEADER INSIDE MODAL (big image) */
 .experience-modal-card .card-header {
   height: 360px;
 }
@@ -303,13 +307,12 @@
   object-fit: cover;
 }
 
+/* body */
 .experience-modal-card .card-content {
   height: auto;
   padding: var(--space-xl);
-  overflow-y: auto; /* scrolls if content is long */
 }
 
-/* date row */
 .modal-date-row {
   display: flex;
   justify-content: flex-start;
@@ -322,11 +325,11 @@
   opacity: 0.85;
 }
 
-/* CLOSE BUTTON – always visible, even on mobile */
+/* ✅ red X close button – now fully inside card like research */
 .experience-modal-close {
-  position: fixed; /* pin to viewport */
-  top: calc(0.75rem + env(safe-area-inset-top, 0));
-  right: 0.9rem;
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
   width: 32px;
   height: 32px;
   border-radius: 999px;
@@ -340,7 +343,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
-  z-index: 10000;
+  z-index: 3;
 }
 
 /* highlight block inside modal */
@@ -369,7 +372,7 @@
   line-height: 1.6;
 }
 
-/* ===== BOTTOM SCROLL ARROW (MATCHES RESEARCH) ===== */
+/* ===== BOTTOM ARROW (same visual as research section) ===== */
 .research-scroll {
   margin-top: 3rem;
   display: flex;
@@ -390,17 +393,6 @@
 .research-scroll:hover .research-scroll-icon {
   opacity: 1;
   transform: translateY(4px);
-}
-
-/* ===== SHARED ARROW ANIMATION ===== */
-@keyframes bounceDown {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(6px);
-  }
 }
 
 /* ===== RESPONSIVE BREAKPOINTS ===== */
@@ -457,20 +449,9 @@
     scroll-snap-align: start;
   }
 
-  /* modal tweaks for mobile */
-  .experience-modal-backdrop {
-    padding: 1.25rem;
-    align-items: flex-start;
-  }
-
-  .experience-modal-card {
-    max-width: 100%;
-    max-height: 92vh;
-    margin-top: 1.75rem;
-  }
-
+  /* modal sizing tweaks on small screens */
   .experience-modal-card .card-header {
-    height: 230px;
+    height: 260px;
   }
 
   .experience-modal-card .card-content {
@@ -495,10 +476,19 @@
     padding: var(--space-md);
   }
 
-  .experience-modal-close {
-    width: 30px;
-    height: 30px;
-    font-size: 1.1rem;
-    right: 0.75rem;
+  .experience-modal-backdrop {
+    padding: 1.25rem;
+  }
+
+  .experience-modal-card {
+    max-width: 100%;
+  }
+
+  .experience-modal-card .card-header {
+    height: 240px;
+  }
+
+  .experience-modal-card .card-content {
+    padding: 1.25rem 1.25rem 1.5rem;
   }
 }
