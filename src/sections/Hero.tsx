@@ -16,21 +16,9 @@ const SLIDES = [
 ];
 
 const navItems = [
-  {
-    id: "experience",
-    label: "Experience",
-    description: "Professional work",
-  },
-  {
-    id: "research",
-    label: "Research",
-    description: "Academic projects",
-  },
-  {
-    id: "design",
-    label: "Design",
-    description: "Creative solutions",
-  },
+  { id: "experience", label: "Experience", description: "Professional work" },
+  { id: "research", label: "Research", description: "Academic projects" },
+  { id: "design", label: "Design", description: "Creative solutions" },
 ];
 
 export default function Hero({
@@ -46,7 +34,7 @@ export default function Hero({
     setIsVisible(true);
   }, []);
 
-  // Background slideshow – only keep previous + current in DOM
+  // Background slideshow – smooth fade + subtle zoom
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => {
@@ -102,7 +90,7 @@ export default function Hero({
       >
         {/* Left column */}
         <div className="hero-left">
-          <div className="hero-label">Civil & Environmental Engineering</div>
+          <div className="hero-label">Civil &amp; Environmental Engineering</div>
 
           <h1 className="hero-title">
             Adrian <span className="hero-title-accent">Montenegro</span>
@@ -113,44 +101,15 @@ export default function Hero({
           </div>
 
           <p className="hero-description">
-            UNLV Honors College civil &amp; environmental engineering student
-            specializing in water systems, sustainable design, and
-            environmental engineering. Currently completing a B.S. in Civil
-            &amp; Environmental Engineering (graduating Fall 2025) and
-            focused on bridging technical excellence with environmental
-            stewardship.
+            UNLV Honors College Civil &amp; Environmental Engineering student
+            with a passion for designing across disciplines—software,
+            infrastructure, and physical systems. I enjoy blending creative flair
+            with a structured, systems-based approach to problem solving.
           </p>
 
-          {/* Inline “more info” details */}
-          <div className="hero-meta">
-            <div className="hero-meta-row">
-              <div className="hero-meta-item">
-                <span className="hero-meta-label">Degree</span>
-                <span className="hero-meta-value">
-                  B.S. Civil &amp; Environmental Engineering
-                </span>
-              </div>
-
-              <div className="hero-meta-item">
-                <span className="hero-meta-label">Graduation</span>
-                <span className="hero-meta-value">Fall 2025</span>
-              </div>
-            </div>
-
-            <div className="hero-meta-row">
-              <div className="hero-meta-item">
-                <span className="hero-meta-label">Email</span>
-                <span className="hero-meta-value">
-                  montea12@unlv.nevada.edu
-                </span>
-              </div>
-            </div>
-          </div>
-
           <div className="hero-actions">
-            {/* TODO: update href to your actual CV route / file */}
             <a
-              href="/Adrian-Montenegro-CV.pdf"
+              href="/assets/CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="hero-btn-primary"
