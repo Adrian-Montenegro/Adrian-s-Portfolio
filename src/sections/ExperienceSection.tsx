@@ -1,7 +1,7 @@
 // src/sections/ExperienceSection.tsx
 import React, { useRef, useEffect, useState } from "react";
 import "../styles/ExperienceSection.css";
-import { FiArrowRight, FiChevronDown } from "react-icons/fi";
+import { FiChevronDown } from "react-icons/fi";
 
 type Experience = {
   id: number;
@@ -212,7 +212,7 @@ export default function ExperienceSection() {
   const maxSpeed = 260;
   const deadZone = 0.12;
 
-  // continuous scrolling animation
+  // continuous scrolling animation (desktop)
   useEffect(() => {
     const animate = (time: number) => {
       if (!trackRef.current) {
@@ -302,7 +302,7 @@ export default function ExperienceSection() {
           </p>
         </div>
 
-        {/* Horizontal Scroll */}
+        {/* DESKTOP / TABLET: auto-scrolling gallery */}
         <div
           className="scrolling-gallery"
           onMouseMove={handleMouseMove}
@@ -326,9 +326,6 @@ export default function ExperienceSection() {
                   <div className="card-category">
                     {exp.type.toUpperCase()}
                   </div>
-                  <div className="card-icon">
-                    <span className="icon-text">{exp.icon}</span>
-                  </div>
                 </div>
 
                 <div className="card-content">
@@ -343,11 +340,6 @@ export default function ExperienceSection() {
                       </span>
                     ))}
                   </div>
-
-                  <div className="card-footer">
-                    <span className="card-date">{exp.date}</span>
-                    <FiArrowRight className="card-arrow" />
-                  </div>
                 </div>
               </div>
             ))}
@@ -359,47 +351,46 @@ export default function ExperienceSection() {
           <FiChevronDown className="scroll-down-icon" />
         </div>
 
-        {/* Mobile stack */}
-        <div className="highlights-stack">
-          {experiences.map((exp) => (
-            <div
-              key={exp.id}
-              className="stack-card"
-              role="button"
-              tabIndex={0}
-              onClick={() => setSelected(exp)}
-            >
-              <div className={`stack-header ${exp.type}`}>
-                <img
-                  src={exp.image}
-                  alt={exp.title}
-                  className="card-image"
-                />
-                <div className="card-category">
-                  {exp.type.toUpperCase()}
+        {/* MOBILE: horizontal swipe carousel */}
+        <div className="highlights-mobile-carousel">
+          <div className="mobile-carousel-track">
+            {experiences.map((exp) => (
+              <div
+                key={exp.id}
+                className="mobile-carousel-card"
+                onClick={() => setSelected(exp)}
+                role="button"
+                tabIndex={0}
+              >
+                <div className={`stack-header ${exp.type}`}>
+                  <img
+                    src={exp.image}
+                    alt={exp.title}
+                    className="card-image"
+                  />
+                  <div className="card-category">
+                    {exp.type.toUpperCase()}
+                  </div>
                 </div>
-                <div className="card-icon">
-                  <span className="icon-text">{exp.icon}</span>
+
+                <div className="stack-content">
+                  <h3 className="card-title">{exp.title}</h3>
+                  <p className="card-subtitle">{exp.subtitle}</p>
+                  <p className="card-description">{exp.description}</p>
+
+                  <div className="card-meta">
+                    {exp.tags.map((tag, idx) => (
+                      <span key={idx} className="meta-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <span className="card-date">{exp.date}</span>
                 </div>
               </div>
-
-              <div className="stack-content">
-                <h3 className="card-title">{exp.title}</h3>
-                <p className="card-subtitle">{exp.subtitle}</p>
-                <p className="card-description">{exp.description}</p>
-
-                <div className="card-meta">
-                  {exp.tags.map((tag, idx) => (
-                    <span key={idx} className="meta-tag">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <span className="card-date">{exp.date}</span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
