@@ -1,3 +1,4 @@
+// src/sections/Hero.tsx
 import { useState, useEffect } from "react";
 import "../styles/Hero.css";
 
@@ -42,7 +43,7 @@ export default function Hero({
         setPreviousSlide(prev);
         return next;
       });
-    }, 8000); // 8 seconds per slide
+    }, 12000); // 12s per slide for slower, luxury feel
 
     return () => clearInterval(interval);
   }, []);
@@ -96,9 +97,7 @@ export default function Hero({
             Adrian <span className="hero-title-accent">Montenegro</span>
           </h1>
 
-          <div className="hero-tagline">
-            SOFTWARE • DESIGN • SYSTEMS
-          </div>
+          <div className="hero-tagline">SOFTWARE • DESIGN • SYSTEMS</div>
 
           <p className="hero-description">
             UNLV Honors College Civil &amp; Environmental Engineering student
@@ -146,7 +145,7 @@ export default function Hero({
         </nav>
       </div>
 
-      {/* Scroll cue */}
+      {/* Scroll cue – hidden on mobile & phone landscape via CSS */}
       <div
         className={
           isVisible

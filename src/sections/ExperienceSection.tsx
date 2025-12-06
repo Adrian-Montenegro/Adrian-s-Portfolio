@@ -32,7 +32,7 @@ const experiences: Experience[] = [
     date: "2023–Present",
     type: "leadership",
     icon: "👥",
-    image: "/assets/academic/ESA/esa.png",
+    image: "/assets/academic/ESA/esa.webp",
   },
   {
     id: 2,
@@ -48,7 +48,7 @@ const experiences: Experience[] = [
     date: "Summer 2023",
     type: "internship",
     icon: "🧰",
-    image: "/assets/projects/clubs/helix.jpeg",
+    image: "/assets/projects/clubs/helix.webp",
   },
   {
     id: 3,
