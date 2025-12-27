@@ -1,5 +1,5 @@
 // src/sections/ExperienceSection.tsx
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import "../styles/ExperienceSection.css";
 import { FiChevronDown } from "react-icons/fi";
 
@@ -80,7 +80,7 @@ const experiences: Experience[] = [
     date: "2024–2025",
     type: "academic",
     icon: "🏗️",
-    image: "/assets/projects/clubs/seniordesign.jpeg",
+    image: "/assets/projects/research/wastetowatts/win.webp",
   },
   {
     id: 5,
@@ -112,7 +112,7 @@ const experiences: Experience[] = [
     date: "2022, 2023",
     type: "academic",
     icon: "🏅",
-    image: "/assets/projects/clubs/honors.jpeg",
+    image: "/assets/projects/clubs/honors.webp",
   },
   {
     id: 7,
@@ -199,6 +199,7 @@ const experiences: Experience[] = [
 const loopingExperiences = [...experiences, ...experiences];
 
 export default function ExperienceSection() {
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<Experience | null>(null);
 
@@ -212,33 +213,111 @@ export default function ExperienceSection() {
   const maxSpeed = 260;
   const deadZone = 0.12;
 
-  // continuous scrolling animation (desktop)
+  // tablet/phone detection
+  const [isTouchLike, setIsTouchLike] = useState(false);
+
+  // ✅ bottom fill to prevent next section peeking
+  const [bottomFill, setBottomFill] = useState(0);
+
+  // detect touch-like devices (iPad Safari = hover none)
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none)");
+    const update = () => setIsTouchLike(mq.matches);
+    update();
+
+    if (mq.addEventListener) mq.addEventListener("change", update);
+    else mq.addListener(update);
+
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", update);
+      else mq.removeListener(update);
+    };
+  }, []);
+
+  // reset dt if Safari backgrounds/returns
+  useEffect(() => {
+    const onVis = () => {
+      if (document.visibilityState === "visible") {
+        lastTimeRef.current = null;
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+
+  // ✅ compute bottom spacer so THIS section fills viewport (no research peek)
+  useEffect(() => {
+    const computeFill = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+
+      const vh =
+        (window.visualViewport && window.visualViewport.height) ||
+        window.innerHeight ||
+        0;
+
+      // scrollHeight can be smaller than viewport on tablet
+      const needed = Math.max(0, vh - el.scrollHeight);
+
+      // small buffer ensures nothing peeks due to rounding
+      setBottomFill(needed + 10);
+    };
+
+    computeFill();
+
+    const onResize = () => computeFill();
+    window.addEventListener("resize", onResize);
+
+    // observe height changes (images/fonts)
+    let ro: ResizeObserver | null = null;
+    if (sectionRef.current && "ResizeObserver" in window) {
+      ro = new ResizeObserver(() => computeFill());
+      ro.observe(sectionRef.current);
+    }
+
+    // iPad sometimes shifts layout after load
+    const t1 = window.setTimeout(computeFill, 250);
+    const t2 = window.setTimeout(computeFill, 900);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (ro) ro.disconnect();
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, []);
+
+  // ✅ continuous looping animation (robust wrap for iPad)
   useEffect(() => {
     const animate = (time: number) => {
-      if (!trackRef.current) {
+      const track = trackRef.current;
+      if (!track) {
         animationRef.current = requestAnimationFrame(animate);
         return;
       }
 
-      if (lastTimeRef.current == null) {
-        lastTimeRef.current = time;
-      }
+      if (lastTimeRef.current == null) lastTimeRef.current = time;
 
-      const dt = (time - lastTimeRef.current) / 1000;
+      // dt clamp prevents huge jump causing “blank gap” / black
+      let dt = (time - lastTimeRef.current) / 1000;
       lastTimeRef.current = time;
+      dt = Math.min(dt, 0.035);
 
-      const track = trackRef.current;
+      // touch-like devices: always keep moving
+      if (isTouchLike) velocityRef.current = baseSpeed;
+
       const totalWidth = track.scrollWidth / 2 || 1;
 
       offsetRef.current += velocityRef.current * dt;
 
-      if (offsetRef.current <= -totalWidth) {
-        offsetRef.current += totalWidth;
-      } else if (offsetRef.current >= 0) {
-        offsetRef.current -= totalWidth;
-      }
+      // ✅ modulo wrap ensures offset always stays in (-totalWidth, 0]
+      let x = offsetRef.current;
+      x = ((x % totalWidth) + totalWidth) % totalWidth; // [0, totalWidth)
+      x = x - totalWidth; // (-totalWidth, 0]
+      offsetRef.current = x;
 
-      track.style.transform = `translateX(${offsetRef.current}px)`;
+      track.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+
       animationRef.current = requestAnimationFrame(animate);
     };
 
@@ -246,44 +325,47 @@ export default function ExperienceSection() {
 
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      lastTimeRef.current = null;
     };
-  }, []);
+  }, [isTouchLike]);
 
   // close modal on Escape key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setSelected(null);
-      }
+      if (e.key === "Escape") setSelected(null);
     };
-
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const container = e.currentTarget;
-    const rect = container.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const center = rect.width / 2;
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (isTouchLike) return;
 
-    const normalized = (x - center) / center;
-    const abs = Math.abs(normalized);
+      const container = e.currentTarget;
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const center = rect.width / 2;
 
-    if (abs < deadZone) {
-      velocityRef.current = 0;
-      return;
-    }
+      const normalized = (x - center) / center;
+      const abs = Math.abs(normalized);
 
-    const intensity = (abs - deadZone) / (1 - deadZone);
-    const speed = maxSpeed * intensity;
+      if (abs < deadZone) {
+        velocityRef.current = 0;
+        return;
+      }
 
-    velocityRef.current = speed * Math.sign(normalized);
-  };
+      const intensity = (abs - deadZone) / (1 - deadZone);
+      const speed = maxSpeed * intensity;
 
-  const handleMouseLeave = () => {
-    velocityRef.current = baseSpeed;
-  };
+      velocityRef.current = speed * Math.sign(normalized);
+    },
+    [isTouchLike]
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    if (!isTouchLike) velocityRef.current = baseSpeed;
+  }, [isTouchLike]);
 
   const handleScrollDown = () => {
     window.scrollBy({
@@ -293,12 +375,19 @@ export default function ExperienceSection() {
   };
 
   return (
-    <section className="highlights-section" id="experience">
+    <section
+      ref={sectionRef}
+      className="highlights-section"
+      id="experience"
+      // ✅ helps prevent “peek” via layout rounding on iPad Safari
+      style={{ minHeight: "100svh" }}
+    >
       <div className="highlights-container">
         <div className="highlights-header">
           <h2 className="highlights-title">Featured Highlights</h2>
           <p className="highlights-subtitle">
-            A curated reel of projects, awards, performances, and leadership roles.
+            A curated reel of projects, awards, performances, and leadership
+            roles.
           </p>
         </div>
 
@@ -322,6 +411,7 @@ export default function ExperienceSection() {
                     src={exp.image}
                     alt={exp.title}
                     className="card-image"
+                    loading="lazy"
                   />
                   <div className="card-category">
                     {exp.type.toUpperCase()}
@@ -346,11 +436,6 @@ export default function ExperienceSection() {
           </div>
         </div>
 
-        {/* Red transition arrow */}
-        <div className="gallery-scroll-indicator" onClick={handleScrollDown}>
-          <FiChevronDown className="scroll-down-icon" />
-        </div>
-
         {/* MOBILE: horizontal swipe carousel */}
         <div className="highlights-mobile-carousel">
           <div className="mobile-carousel-track">
@@ -362,11 +447,14 @@ export default function ExperienceSection() {
                 role="button"
                 tabIndex={0}
               >
+                <span className="mobile-card-arrow">→</span>
+
                 <div className={`stack-header ${exp.type}`}>
                   <img
                     src={exp.image}
                     alt={exp.title}
                     className="card-image"
+                    loading="lazy"
                   />
                   <div className="card-category">
                     {exp.type.toUpperCase()}
@@ -392,7 +480,21 @@ export default function ExperienceSection() {
             ))}
           </div>
         </div>
+
+        {/* Red transition arrow */}
+        <div
+          className="gallery-scroll-indicator"
+          onClick={handleScrollDown}
+          role="button"
+          tabIndex={0}
+          aria-label="Scroll down"
+        >
+          <FiChevronDown className="scroll-down-icon" />
+        </div>
       </div>
+
+      {/* ✅ Spacer keeps the page black / prevents Research peek on tablet */}
+      <div aria-hidden style={{ height: bottomFill }} />
 
       {/* CENTERED FOCAL CARD OVERLAY */}
       {selected && (
@@ -407,6 +509,8 @@ export default function ExperienceSection() {
             <button
               className="experience-modal-close"
               onClick={() => setSelected(null)}
+              aria-label="Close"
+              type="button"
             >
               ×
             </button>

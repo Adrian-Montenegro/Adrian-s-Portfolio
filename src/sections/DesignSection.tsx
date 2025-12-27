@@ -87,7 +87,6 @@ const projects: Project[] = [
       '/assets/projects/fieldflow/fieldflow_tasks.png',
       '/assets/projects/fieldflow/export.png',
       '/assets/projects/fieldflow/logsettings.png',
-      '/assets/projects/fieldflow/idea.jpeg',
     ],
   },
   {
@@ -112,10 +111,13 @@ const projects: Project[] = [
       '/assets/projects/research/wastetowatts/diagram_ro.png',
       '/assets/projects/research/wastetowatts/projectmap.JPG',
       '/assets/projects/research/wastetowattslab/labbottles.jpeg',
+      '/assets/projects/research/wastetowattslab/lab1.jpeg',
+      '/assets/projects/research/wastetowattslab/lab2.jpeg',
       '/assets/projects/research/wastetowattslab/labcolumn.jpeg',
       '/assets/projects/research/wastetowattslab/labwork.jpeg',
       '/assets/projects/research/wastetowattslab/morewater.jpeg',
       '/assets/projects/research/wastetowattslab/watercollection.jpeg',
+      '/assets/projects/research/wastetowatts/newpaper.webp',
     ],
   },
 ];
@@ -126,6 +128,9 @@ const DesignSection: React.FC = () => {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Back-to-top visibility
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   const activeProject = projects[activeTab];
   const activeImages = activeProject.images ?? [];
@@ -169,20 +174,26 @@ const DesignSection: React.FC = () => {
     }
   }, [touchStart, touchEnd, activeImages.length]);
 
-  useEffect(() => {
-    handleTouchEnd();
-  }, [handleTouchEnd]);
-
   // Close fullscreen on ESC
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setIsFullscreen(false);
-      }
+      if (e.key === 'Escape') setIsFullscreen(false);
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
+
+  // Show back-to-top after scrolling a bit
+  useEffect(() => {
+    const onScroll = () => setShowBackToTop(window.scrollY > 500);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <section id="design" className="design-section">
@@ -216,6 +227,7 @@ const DesignSection: React.FC = () => {
             {projects.map((project, index) => (
               <button
                 key={project.title}
+                type="button"
                 className={
                   'design-tab' + (index === activeTab ? ' design-tab--active' : '')
                 }
@@ -256,6 +268,7 @@ const DesignSection: React.FC = () => {
                     <>
                       <div className="design-image-nav">
                         <button
+                          type="button"
                           className="design-image-nav__btn design-image-nav__btn--prev"
                           onClick={handlePrevImage}
                           aria-label="Previous image"
@@ -264,6 +277,7 @@ const DesignSection: React.FC = () => {
                         </button>
 
                         <button
+                          type="button"
                           className="design-image-nav__btn design-image-nav__btn--next"
                           onClick={handleNextImage}
                           aria-label="Next image"
@@ -277,6 +291,7 @@ const DesignSection: React.FC = () => {
                         {activeImages.map((_, index) => (
                           <button
                             key={index}
+                            type="button"
                             className={`design-image-dot ${
                               index === activeImageIndex
                                 ? 'design-image-dot--active'
@@ -318,9 +333,7 @@ const DesignSection: React.FC = () => {
               <div className="design-main__text">
                 <h3 className="design-main__title">{activeProject.title}</h3>
                 <p className="design-main__subtitle">{activeProject.subtitle}</p>
-                <p className="design-main__description">
-                  {activeProject.description}
-                </p>
+                <p className="design-main__description">{activeProject.description}</p>
               </div>
 
               <div className="design-main__meta">
@@ -348,6 +361,18 @@ const DesignSection: React.FC = () => {
         </div>
       </div>
 
+      {/* Back to top button */}
+      <button
+        type="button"
+        className={
+          'design-backtotop' + (showBackToTop ? ' design-backtotop--visible' : '')
+        }
+        onClick={scrollToTop}
+        aria-label="Back to top"
+      >
+        <span className="design-backtotop__icon">↑</span>
+      </button>
+
       {/* FULLSCREEN IMAGE MODAL */}
       {isFullscreen && activeImages.length > 0 && (
         <div
@@ -359,6 +384,7 @@ const DesignSection: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              type="button"
               className="design-fullscreen-close"
               onClick={() => setIsFullscreen(false)}
               aria-label="Close fullscreen image"

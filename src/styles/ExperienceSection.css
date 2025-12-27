@@ -1,3 +1,5 @@
+/* src/styles/ExperienceSection.css */
+
 /* ===== HIGHLIGHTS SECTION WRAPPER ===== */
 .highlights-section {
   background: linear-gradient(135deg, var(--color-black) 0%, #0f0f0f 100%);
@@ -38,18 +40,21 @@
   margin: 0 auto;
 }
 
-/* ===== DESKTOP SCROLLING GALLERY ===== */
+/* ===== DESKTOP/TABLET AUTO-SCROLLING GALLERY ===== */
 .scrolling-gallery {
   position: relative;
   width: 100%;
   overflow: hidden;
   padding: var(--space-lg) 0;
+  will-change: transform;
 }
 
 .scrolling-track {
   display: flex;
   gap: var(--space-lg);
   width: max-content;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 /* Gradient fade edges */
@@ -74,7 +79,7 @@
   background: linear-gradient(270deg, var(--color-black) 0%, transparent 100%);
 }
 
-/* ===== GALLERY CARD (DESKTOP) ===== */
+/* ===== GALLERY CARD (DESKTOP/TABLET) ===== */
 .gallery-card {
   flex: 0 0 380px;
   height: 480px;
@@ -85,6 +90,7 @@
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   backdrop-filter: blur(10px);
   position: relative;
+  cursor: pointer;
 }
 
 .gallery-card:hover {
@@ -202,19 +208,28 @@
   background: #14213d;
 }
 
-/* Mid-page red arrow (desktop/tablet) */
+/* ===== RED TRANSITION ARROW (DESKTOP + MOBILE) ===== */
 .gallery-scroll-indicator {
   margin-top: var(--space-lg);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .scroll-down-icon {
-  font-size: 2rem;
+  font-size: 2.1rem;
   color: var(--color-red);
+  opacity: 0.8;
   animation: bounceDown 2s infinite;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.gallery-scroll-indicator:hover .scroll-down-icon {
+  opacity: 1;
+  transform: translateY(4px);
 }
 
 @keyframes bounceDown {
@@ -228,9 +243,8 @@
 }
 
 /* ===== MOBILE HORIZONTAL CAROUSEL ===== */
-
 .highlights-mobile-carousel {
-  display: none; /* hidden on desktop, enabled in mobile media query */
+  display: none;
 }
 
 .mobile-carousel-track {
@@ -246,6 +260,19 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
   backdrop-filter: blur(10px);
+  position: relative;
+}
+
+/* arrow element inside mobile cards */
+.mobile-card-arrow {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-size: 1.1rem;
+  color: #ef4444;
+  text-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+  pointer-events: none;
+  z-index: 4;
 }
 
 /* reuse stack header for the image area */
@@ -267,8 +294,15 @@
   margin-bottom: var(--space-md);
 }
 
-/* ===== MODAL OVERLAY ===== */
+.card-date {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--color-white-muted);
+  opacity: 0.85;
+}
 
+/* ===== MODAL OVERLAY ===== */
 .experience-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -281,7 +315,6 @@
   backdrop-filter: blur(8px);
 }
 
-/* central card */
 .experience-modal-card {
   position: relative;
   background: rgba(15, 15, 15, 0.98);
@@ -296,7 +329,6 @@
   flex-direction: column;
 }
 
-/* HEADER INSIDE MODAL (big image) */
 .experience-modal-card .card-header {
   height: 360px;
 }
@@ -307,7 +339,6 @@
   object-fit: cover;
 }
 
-/* body */
 .experience-modal-card .card-content {
   height: auto;
   padding: var(--space-xl);
@@ -325,7 +356,6 @@
   opacity: 0.85;
 }
 
-/* ✅ red X close button – now fully inside card like research */
 .experience-modal-close {
   position: absolute;
   top: 1.1rem;
@@ -346,7 +376,6 @@
   z-index: 3;
 }
 
-/* highlight block inside modal */
 .modal-highlight {
   margin-top: var(--space-md);
   margin-bottom: var(--space-md);
@@ -372,62 +401,84 @@
   line-height: 1.6;
 }
 
-/* ===== BOTTOM ARROW (same visual as research section) ===== */
-.research-scroll {
-  margin-top: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #ef4444;
-}
-
-.research-scroll-icon {
-  font-size: 2.2rem;
-  color: #ef4444;
-  opacity: 0.75;
-  animation: bounceDown 2s infinite;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.research-scroll:hover .research-scroll-icon {
-  opacity: 1;
-  transform: translateY(4px);
-}
-
 /* ===== RESPONSIVE BREAKPOINTS ===== */
 
+/* Large laptops */
 @media (max-width: 1200px) {
   .gallery-card {
-    flex: 0 0 340px;
-    height: 450px;
-  }
-}
-
-@media (max-width: 968px) {
-  .gallery-card {
-    flex: 0 0 300px;
-    height: 420px;
-  }
-
-  .card-header {
-    height: 150px;
+    flex: 0 0 360px;
+    height: 480px;
   }
 
   .card-content {
-    height: 270px;
-    padding: var(--space-md);
-  }
-
-  .card-title {
-    font-size: 1.3rem;
+    height: 300px;
   }
 }
 
+/* ✅ TABLET RANGE: make cards BIGGER (this is the main fix) */
+@media (max-width: 1024px) {
+  .gallery-card {
+    flex: 0 0 380px;   /* bigger width on tablet */
+    height: 520px;     /* taller so content doesn't choke */
+  }
+
+  .card-header {
+    height: 190px;     /* slightly taller image */
+  }
+
+  .card-content {
+    height: 330px;     /* more room for description + tags */
+    padding: var(--space-lg);
+  }
+
+  .card-title {
+    font-size: 1.55rem;
+  }
+
+  .card-subtitle {
+    font-size: 1.05rem;
+  }
+
+  .card-description {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: var(--space-md);
+  }
+
+  .meta-tag {
+    font-size: 0.82rem;
+    padding: 0.45rem 0.85rem;
+  }
+}
+
+/* ✅ Smaller tablets (like iPad mini portrait) */
+@media (max-width: 968px) {
+  .gallery-card {
+    flex: 0 0 360px;  /* still large */
+    height: 500px;
+  }
+
+  .card-header {
+    height: 180px;
+  }
+
+  .card-content {
+    height: 320px;
+    padding: var(--space-lg);
+  }
+
+  .card-title {
+    font-size: 1.45rem;
+  }
+
+  .card-description {
+    font-size: 0.93rem;
+  }
+}
+
+/* MOBILE layout (show swipe carousel) */
 @media (max-width: 768px) {
-  /* hide desktop track on small screens */
-  .scrolling-gallery,
-  .gallery-scroll-indicator {
+  .scrolling-gallery {
     display: none;
   }
 
@@ -435,7 +486,6 @@
     font-size: 2.5rem;
   }
 
-  /* enable mobile carousel */
   .highlights-mobile-carousel {
     display: block;
     margin-top: var(--space-xl);
@@ -445,11 +495,25 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  .mobile-carousel-track {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
   .mobile-carousel-card {
     scroll-snap-align: start;
   }
 
-  /* modal sizing tweaks on small screens */
+  .gallery-scroll-indicator {
+    display: flex;
+    margin-top: 1.75rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .scroll-down-icon {
+    font-size: 2.2rem;
+  }
+
   .experience-modal-card .card-header {
     height: 260px;
   }
@@ -492,51 +556,104 @@
     padding: 1.25rem 1.25rem 1.5rem;
   }
 }
-/* === MOBILE ARROW (Match Research Styling) ===================== */
-@media (max-width: 768px) {
-  .feature-card {
-    position: relative;
-  }
 
-  .feature-card::after {
-    content: "→";
-    position: absolute;
-    right: 16px;
-    top: 18px;
-    font-size: 1.1rem;
-    color: #ef4444;
-    opacity: 0.9;
-    text-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-
-  .feature-card:active::after {
-    transform: translateX(4px);
-    opacity: 1;
+/* ===== TABLET "TOUCH-LIKE" SAFETY ===== */
+@media (hover: none) {
+  .gallery-card:hover {
+    transform: none;
+    box-shadow: none;
   }
 }
-/* Mobile: add subtle arrow on highlight cards (like Research) */
-@media (max-width: 768px) {
-  .mobile-carousel-card {
-    position: relative;
+/* src/styles/ResearchSection.css */
+
+/* ✅ Make the big image feel clickable (without changing desktop behavior) */
+.research-modal-image--clickable {
+  cursor: zoom-in;
+}
+
+/* ✅ Helpful hint only on touch-like devices (tablet/phone) */
+.research-zoom-hint {
+  display: none;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: rgba(249, 250, 251, 0.75);
+}
+
+@media (hover: none) {
+  .research-zoom-hint {
+    display: block;
+  }
+}
+
+/* ===========================
+   FULLSCREEN IMAGE MODAL
+   (matches DesignSection behavior)
+=========================== */
+.research-fullscreen-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.research-fullscreen-card {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 90vh;
+  border-radius: 24px;
+  background: #020617;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.research-fullscreen-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+/* red X close button */
+.research-fullscreen-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(248, 113, 113, 0.9);
+  background: rgba(239, 68, 68, 0.95);
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 640px) {
+  .research-fullscreen-backdrop {
+    padding: 1rem;
   }
 
-  .mobile-carousel-card::after {
-    content: "→";
-    position: absolute;
-    right: 18px;
-    top: 18px;
+  .research-fullscreen-card {
+    border-radius: 18px;
+  }
+
+  .research-fullscreen-close {
+    width: 30px;
+    height: 30px;
     font-size: 1.1rem;
-    color: #ef4444;
-    opacity: 0.9;
-    text-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
-    pointer-events: none;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-    z-index: 2;
-  }
-
-  .mobile-carousel-card:active::after {
-    transform: translateX(4px);
-    opacity: 1;
   }
 }

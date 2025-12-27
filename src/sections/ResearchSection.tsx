@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// src/sections/ResearchSection.tsx
+import React, { useState, useEffect, useCallback } from "react";
 import "../styles/ResearchSection.css";
 import { FiChevronDown } from "react-icons/fi";
 
@@ -6,13 +7,13 @@ type ResearchProject = {
   id: number;
   title: string;
   category: string;
-  description: string; // short blurb (front card)
-  detailDescription: string; // deeper description (inside modal)
-  insight: string; // “what I focused on / learned”
+  description: string;
+  detailDescription: string;
+  insight: string;
   outcome: string;
   status: string;
-  images: string[]; // 4 images for gallery
-  pdfUrl?: string; // optional, if you want a PDF button
+  images: string[];
+  pdfUrl?: string;
 };
 
 const ResearchSection: React.FC = () => {
@@ -30,9 +31,9 @@ const ResearchSection: React.FC = () => {
       status: "Senior Design",
       images: [
         "/assets/projects/research/wastetowatts/googledatacenter.jpeg",
-        "/assets/projects/research/WWResearch/lab1.jpeg",
-        "/assets/projects/research/WWResearch/lab2.jpeg",
-        "/assets/projects/research/WWResearch/poster.png",
+        "/assets/projects/research/wastetowatts/booth.webp",
+        "/assets/projects/research/wastetowatts/grandprize.webp",
+        "/assets/projects/research/wastetowatts/finalposter.webp",
       ],
       pdfUrl: "/assets/Data_Center.pdf",
     },
@@ -49,9 +50,9 @@ const ResearchSection: React.FC = () => {
       status: "Completed",
       images: [
         "/assets/academic/technical-reports/LCA/Applebee.jpg",
-        "/assets/academic/technical-reports/LCA/map.png",
+        "/assets/academic/technical-reports/LCA/map.webp",
         "/assets/academic/technical-reports/LCA/LCA1.jpg",
-        "/assets/academic/technical-reports/LCA/LCA2.jpg.jpg",
+        "/assets/academic/technical-reports/LCA/LCA2.jpg",
       ],
       pdfUrl: "/assets/Comparative_LCA.pdf",
     },
@@ -59,8 +60,7 @@ const ResearchSection: React.FC = () => {
       id: 3,
       title: "Lethal Learning",
       category: "Systems Engineering",
-      description:
-        "Infrastructure impact on learning and student safety.",
+      description: "Infrastructure impact on learning and student safety.",
       detailDescription:
         "Blended interviews, site observations, and systems mapping to examine how school design, policy, and technology interact to influence student safety and learning conditions.",
       insight:
@@ -68,10 +68,10 @@ const ResearchSection: React.FC = () => {
       outcome: "50+ interviews",
       status: "Published",
       images: [
-        "/assets/projects/research/lethallearning/lethallearning.jpeg",
-        "/assets/projects/research/lethallearning/schoolposter.jpeg",
-        "/assets/projects/research/lethallearning/layoutschool.jpeg",
-        "/assets/projects/research/lethallearning/newschool.jpeg",
+        "/assets/projects/research/lethallearning/lethallearning.webp",
+        "/assets/projects/research/lethallearning/schoolposter.webp",
+        "/assets/projects/research/lethallearning/schoolshootingpresent.webp",
+        "/assets/projects/research/lethallearning/lostones.webp",
       ],
       pdfUrl: "/assets/Lethal_Learning.pdf",
     },
@@ -99,26 +99,52 @@ const ResearchSection: React.FC = () => {
   const [selected, setSelected] = useState<ResearchProject | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  // ESC to close
+  // ✅ NEW: fullscreen image modal (DesignSection behavior)
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // ESC handling (close fullscreen first, then close project modal)
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelected(null);
+      if (e.key !== "Escape") return;
+
+      if (isFullscreen) {
+        setIsFullscreen(false);
+        return;
+      }
+
+      setSelected(null);
     };
+
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
-  }, []);
+  }, [isFullscreen]);
 
   const scrollToDesign = () => {
     const el = document.getElementById("design");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const openProject = (p: ResearchProject) => {
     setSelected(p);
     setActiveImageIndex(0);
+    setIsFullscreen(false);
   };
+
+  // ✅ NEW: open fullscreen from ANY view (desktop/tablet/mobile)
+  const openFullscreen = useCallback((idx?: number) => {
+    if (!selected) return;
+    if (typeof idx === "number") setActiveImageIndex(idx);
+    setIsFullscreen(true);
+  }, [selected]);
+
+  const closeProject = useCallback(() => {
+    setIsFullscreen(false);
+    setSelected(null);
+  }, []);
+
+  const closeFullscreen = useCallback(() => {
+    setIsFullscreen(false);
+  }, []);
 
   return (
     <section id="research" className="research-wrapper">
@@ -126,8 +152,7 @@ const ResearchSection: React.FC = () => {
         <span className="research-tag">Research & Analysis</span>
         <h2 className="research-title">Research Projects</h2>
         <p className="research-subtitle">
-          Selected work in environmental engineering, systems analysis,
-          and human-centered infrastructure.
+          Selected work in environmental engineering, systems analysis, and human-centered infrastructure.
         </p>
       </div>
 
@@ -139,6 +164,9 @@ const ResearchSection: React.FC = () => {
             role="button"
             tabIndex={0}
             onClick={() => openProject(p)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") openProject(p);
+            }}
           >
             {/* Image Left */}
             <div
@@ -176,24 +204,19 @@ const ResearchSection: React.FC = () => {
       </div>
 
       {/* Bottom transition arrow */}
-      <div className="research-scroll" onClick={scrollToDesign}>
+      <div className="research-scroll" onClick={scrollToDesign} role="button" tabIndex={0}>
         <FiChevronDown className="research-scroll-icon" />
       </div>
 
-      {/* BIG IMAGE-FOCUSED MODAL */}
+      {/* BIG PROJECT MODAL */}
       {selected && (
-        <div
-          className="research-modal-backdrop"
-          onClick={() => setSelected(null)}
-        >
-          <div
-            className="research-modal-card"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div className="research-modal-backdrop" onClick={closeProject}>
+          <div className="research-modal-card" onClick={(e) => e.stopPropagation()}>
             <button
               className="research-modal-close"
-              onClick={() => setSelected(null)}
+              onClick={closeProject}
               aria-label="Close research project details"
+              type="button"
             >
               ×
             </button>
@@ -201,13 +224,22 @@ const ResearchSection: React.FC = () => {
             <div className="research-modal-layout">
               {/* LEFT: huge image gallery */}
               <div className="research-modal-left">
+                {/* ✅ CLICKABLE main image (all views) */}
                 <div
-                  className="research-modal-image"
+                  className="research-modal-image research-modal-image--clickable"
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Open image fullscreen"
+                  onClick={() => openFullscreen(activeImageIndex)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") openFullscreen(activeImageIndex);
+                  }}
                   style={{
                     backgroundImage: `url(${selected.images[activeImageIndex]})`,
                   }}
                 />
 
+                {/* Thumbnails: also open fullscreen when you click a thumb (after selecting) */}
                 <div className="research-modal-thumbs">
                   {selected.images.map((img, idx) => (
                     <button
@@ -219,8 +251,15 @@ const ResearchSection: React.FC = () => {
                       }
                       style={{ backgroundImage: `url(${img})` }}
                       onClick={() => setActiveImageIndex(idx)}
+                      onDoubleClick={() => openFullscreen(idx)}
+                      aria-label={`Select image ${idx + 1}`}
                     />
                   ))}
+                </div>
+
+                {/* ✅ Tablet helper text (shows only when hover isn't available) */}
+                <div className="research-zoom-hint" aria-hidden>
+                  Tap image to zoom
                 </div>
               </div>
 
@@ -233,9 +272,7 @@ const ResearchSection: React.FC = () => {
 
                 <h3 className="research-modal-title">{selected.title}</h3>
 
-                <p className="research-modal-desc">
-                  {selected.detailDescription}
-                </p>
+                <p className="research-modal-desc">{selected.detailDescription}</p>
 
                 <div className="research-modal-outcome">
                   <span className="research-outcome-pill">
@@ -259,6 +296,36 @@ const ResearchSection: React.FC = () => {
                 )}
               </div>
             </div>
+
+            {/* ✅ FULLSCREEN IMAGE MODAL (DesignSection behavior) */}
+            {isFullscreen && selected.images.length > 0 && (
+              <div
+                className="research-fullscreen-backdrop"
+                onClick={closeFullscreen}
+                role="presentation"
+              >
+                <div
+                  className="research-fullscreen-card"
+                  onClick={(e) => e.stopPropagation()}
+                  role="presentation"
+                >
+                  <button
+                    type="button"
+                    className="research-fullscreen-close"
+                    onClick={closeFullscreen}
+                    aria-label="Close fullscreen image"
+                  >
+                    ×
+                  </button>
+
+                  <img
+                    src={selected.images[activeImageIndex]}
+                    alt={`${selected.title} image ${activeImageIndex + 1}`}
+                    className="research-fullscreen-image"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

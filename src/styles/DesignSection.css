@@ -674,3 +674,85 @@
     font-size: 1.1rem;
   }
 }
+
+/* ===============================
+   DESIGN: BACK TO TOP BUTTON
+================================*/
+.design-backtotop {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 9998;
+
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+
+  cursor: pointer;
+  color: #ef4444;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+
+.design-backtotop--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.design-backtotop:hover {
+  border-color: rgba(248, 113, 113, 0.7);
+}
+
+.design-backtotop__icon {
+  font-size: 1.6rem;
+  color: #ef4444;
+  opacity: 0.8;
+  animation: bounceUp 2s infinite;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.design-backtotop:hover .design-backtotop__icon {
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+@keyframes bounceUp {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Mobile ergonomics: keep it reachable and not too big */
+@media (max-width: 640px) {
+  .design-backtotop {
+    right: 1rem;
+    bottom: 1rem;
+    width: 44px;
+    height: 44px;
+  }
+
+  .design-backtotop__icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* iOS: remove tap highlight */
+.design-backtotop {
+  -webkit-tap-highlight-color: transparent;
+}
